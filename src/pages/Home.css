@@ -1,0 +1,147 @@
+/* Fondo general */
+.registro-fondo {
+  --background: #f0f4f8;
+}
+
+/* Tarjeta principal: más amplia y espaciosa */
+.registro-card {
+  width: calc(100% - 48px);
+  max-width: 850px;
+  margin: 32px auto;
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Encabezado */
+ion-card-header {
+  padding: 30px 32px 18px;
+}
+
+ion-card-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--ion-color-primary);
+}
+
+ion-card-header p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+/* Contenido de la tarjeta */
+ion-card-content {
+  padding: 10px 32px 32px;
+}
+
+/* Campos de entrada */
+ion-item {
+  margin-top: 20px;
+  --color: #1f2937;
+  --background: #ffffff;
+  --border-radius: 10px;
+  --padding-start: 16px;
+  --min-height: 76px;
+  --inner-padding-end: 12px;
+}
+
+ion-input {
+  --color: #1f2937;
+  --placeholder-color: #64748b;
+  --placeholder-opacity: 1;
+  --label-color: #374151;
+  --highlight-color-focused: #3880ff;
+}
+
+/* Mensajes de error */
+.mensaje-error {
+  font-size: 13px;
+  margin: 8px 16px 12px;
+  line-height: 1.5;
+}
+
+/* Requisitos de contraseña */
+.requisitos-contrasena {
+  margin: 12px 16px 18px;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.requisitos-contrasena p {
+  margin: 7px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Botón principal */
+.boton-registro {
+  margin-top: 30px;
+  height: 52px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Mensaje de éxito */
+.mensaje-exito {
+  text-align: center;
+  font-weight: bold;
+  line-height: 1.6;
+  margin-top: 24px;
+  padding: 12px;
+}
+
+/* Adaptación para móviles */
+@media (max-width: 600px) {
+  .registro-card {
+    width: calc(100% - 24px);
+    margin: 16px auto;
+  }
+
+  ion-card-header {
+    padding: 24px 20px 14px;
+  }
+
+  ion-card-title {
+    font-size: 24px;
+  }
+
+  ion-card-content {
+    padding: 8px 20px 24px;
+  }
+
+  ion-item {
+    margin-top: 16px;
+  }
+}
+
+/* Cuadrícula del formulario */
+.formulario-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 28px;
+  align-items: start;
+}
+
+/* Evitar que los campos desborden sus columnas */
+.campo-formulario {
+  min-width: 0;
+}
+
+.campo-formulario ion-item {
+  width: 100%;
+  margin-top: 0;
+}
+
+/* Requisitos de contraseña dentro de su columna */
+.campo-formulario .requisitos-contrasena {
+  margin: 12px 0 0;
+}
+
+/* En móviles, usar una sola columna */
+@media (max-width: 650px) {
+  .formulario-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+}

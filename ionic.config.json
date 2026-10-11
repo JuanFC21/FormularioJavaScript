@@ -1,0 +1,7 @@
+{
+  "name": "formulario-validacion",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

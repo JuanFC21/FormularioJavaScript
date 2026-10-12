@@ -1,0 +1,289 @@
+
+import { useState, type FormEvent } from 'react';
+
+import {IonContent,IonHeader,IonPage,IonTitle,IonToolbar,IonCard,IonCardHeader,IonCardTitle,IonCardContent,IonInput,IonButton,IonText,IonItem,IonIcon} from '@ionic/react';
+
+import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
+
+
+
+import { obtenerErrores } from '../utils/validarFormulario';
+
+import './Home.css';
+import { revisarContrasena } from '../utils/validaciones/revisarContrasena';
+import { soloNumeros } from '../utils/validaciones/validarEdad';
+
+
+
+const Home: React.FC = () => {
+
+
+  const [nombre, setNombre] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [contrasena, setContrasena] = useState('');
+  const [edad, setEdad] = useState('');
+
+  const [mostrarContrasena, setMostrarContrasena] = useState(false);
+  const [errores, setErrores] = useState<Record<string, string>>({});
+  const [registrado, setRegistrado] = useState(false);
+
+  
+  const requisitos = revisarContrasena(contrasena);
+
+  
+  const limpiarError = (campo: string) => {
+    setErrores((actuales) => {
+      const siguientes = { ...actuales };
+      delete siguientes[campo];
+      return siguientes;
+    });
+
+    setRegistrado(false);
+  };
+
+
+
+  
+  const validarFormulario = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const nuevosErrores = obtenerErrores(
+      nombre,
+      correo,
+      contrasena,
+      edad
+    );
+
+    setErrores(nuevosErrores);
+
+    if (Object.keys(nuevosErrores).length === 0) {
+      setRegistrado(true);
+    } else {
+      setRegistrado(false);
+    }
+  };
+
+ 
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar color="primary">
+          <IonTitle>Formulario de registro</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent className="registro-fondo">
+        <IonCard className="registro-card">
+
+          <IonCardHeader>
+            <IonCardTitle>
+              Crea tu cuenta
+            </IonCardTitle>
+
+            <IonText color="medium">
+              <p>Completa tus datos y valida la información.</p>
+            </IonText>
+          </IonCardHeader>
+
+          <IonCardContent>
+            <form onSubmit={validarFormulario}>
+              <div className="formulario-grid">
+
+                {/* NOMBRE */}
+                <div className="campo-formulario">
+                  <IonItem>
+                    <IonInput
+                      label="Nombre completo"
+                      labelPlacement="stacked"
+                      placeholder="Ej. Juan Pérez"
+                      value={nombre}
+                      onIonInput={(e) => {
+                        setNombre(e.detail.value ?? '');
+                        limpiarError('nombre');
+                      }}
+                    />
+                  </IonItem>
+
+                  {errores.nombre && (
+                    <IonText color="danger">
+                      <p className="mensaje-error">
+                        {errores.nombre}
+                      </p>
+                    </IonText>
+                  )}
+                </div>
+
+                {/* CORREO */}
+                <div className="campo-formulario">
+                  <IonItem>
+                    <IonInput
+                      type="email"
+                      label="Correo electrónico"
+                      labelPlacement="stacked"
+                      placeholder="ejemplo@correo.com"
+                      value={correo}
+                      onIonInput={(e) => {
+                        setCorreo(e.detail.value ?? '');
+                        limpiarError('correo');
+                      }}
+                    />
+                  </IonItem>
+
+                  {errores.correo && (
+                    <IonText color="danger">
+                      <p className="mensaje-error">
+                        {errores.correo}
+                      </p>
+                    </IonText>
+                  )}
+                </div>
+
+                {/* CONTRASEÑA */}
+                <div className="campo-formulario">
+                  <IonItem>
+                    <IonInput
+                      type={mostrarContrasena ? 'text' : 'password'}
+                      label="Contraseña"
+                      labelPlacement="stacked"
+                      placeholder="Mínimo 8 caracteres"
+                      value={contrasena}
+                      onIonInput={(e) => {
+                        setContrasena(e.detail.value ?? '');
+                        limpiarError('contrasena');
+                      }}
+                    />
+
+                    <IonButton
+                      fill="clear"
+                      slot="end"
+                      type="button"
+                      aria-label={
+                        mostrarContrasena
+                          ? 'Ocultar contraseña'
+                          : 'Mostrar contraseña'
+                      }
+                      onClick={() =>
+                        setMostrarContrasena(!mostrarContrasena)
+                      }
+                    >
+                      <IonIcon
+                        slot="icon-only"
+                        icon={
+                          mostrarContrasena
+                            ? eyeOffOutline
+                            : eyeOutline
+                        }
+                      />
+                    </IonButton>
+                  </IonItem>
+
+                  {/* REQUISITOS */}
+                  <div className="requisitos-contrasena">
+                    <IonText
+                      color={requisitos.cumpleLongitud ? 'success' : 'medium'}
+                    >
+                      <p>
+                        {requisitos.cumpleLongitud ? '✓' : '○'} Mínimo 8 caracteres
+                      </p>
+                    </IonText>
+
+                    <IonText
+                      color={requisitos.tieneMayuscula ? 'success' : 'medium'}
+                    >
+                      <p>
+                        {requisitos.tieneMayuscula ? '✓' : '○'} Una letra mayúscula
+                      </p>
+                    </IonText>
+
+                    <IonText
+                      color={requisitos.tieneMinuscula ? 'success' : 'medium'}
+                    >
+                      <p>
+                        {requisitos.tieneMinuscula ? '✓' : '○'} Una letra minúscula
+                      </p>
+                    </IonText>
+
+                    <IonText
+                      color={requisitos.tieneNumero ? 'success' : 'medium'}
+                    >
+                      <p>
+                        {requisitos.tieneNumero ? '✓' : '○'} Al menos un número
+                      </p>
+                    </IonText>
+                  </div>
+
+                  {errores.contrasena && (
+                    <IonText color="danger">
+                      <p className="mensaje-error">
+                        {errores.contrasena}
+                      </p>
+                    </IonText>
+                  )}
+                </div>
+
+                {/* EDAD */}
+                <div className="campo-formulario">
+                  <IonItem>
+                    <IonInput
+                      type="number"
+                      label="Edad"
+                      labelPlacement="stacked"
+                      placeholder="Ej. 20"
+                      min="18"
+                      max="120"
+                      step="1"
+                      value={edad}
+                      onIonInput={(e) => {
+                        const valor = e.detail.value ?? '';
+
+                        if (soloNumeros(valor)) {
+                          setEdad(valor);
+                          limpiarError('edad');
+                        }
+                      }}
+                      onWheel={(e) => {
+                        (e.target as HTMLElement).blur();
+                      }}
+                    />
+                  </IonItem>
+
+                  {errores.edad && (
+                    <IonText color="danger">
+                      <p className="mensaje-error">
+                        {errores.edad}
+                      </p>
+                    </IonText>
+                  )}
+                </div>
+
+              </div>
+
+              {/* BOTÓN */}
+              <IonButton
+                expand="block"
+                type="submit"
+                className="boton-registro"
+              >
+                Validar formulario
+              </IonButton>
+
+            </form>
+
+            {/* RESULTADO */}
+            {registrado && (
+              <IonText color="success">
+                <p className="mensaje-exito">
+                  ¡Registro válido! Todos los datos cumplen
+                  con los requisitos.
+                </p>
+              </IonText>
+            )}
+
+          </IonCardContent>
+        </IonCard>
+      </IonContent>
+    </IonPage>
+  );
+};
+
+export default Home;
